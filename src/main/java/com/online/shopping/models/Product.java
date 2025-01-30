@@ -9,16 +9,16 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private final Long id;
 	@Column(nullable = false, unique = true)
-	private final String  name;
+	private final String name;
 	@Column(nullable = false)
-	private  Integer stock;
+	private Integer stock;
 	@Column(nullable = false, precision = 6, scale = 2)
 	private Double price;
 
-	public Product(Integer stock, Double price, String name) {
+	public Product(String name, Integer stock, Double price) {
+		this.name = name;
 		this.stock = stock;
 		this.price = price;
-		this.name = name;
 	}
 
 	public Long getId() {
