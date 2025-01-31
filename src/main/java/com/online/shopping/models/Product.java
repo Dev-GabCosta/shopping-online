@@ -7,13 +7,16 @@ import jakarta.persistence.*;
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private final Long id;
+	private Long id;
 	@Column(nullable = false, unique = true)
-	private final String name;
+	private String name;
 	@Column(nullable = false)
 	private Integer stock;
-	@Column(nullable = false, precision = 6, scale = 2)
+	@Column(nullable = false)
 	private Double price;
+
+	public Product() {
+	}
 
 	public Product(String name, Integer stock, Double price) {
 		this.name = name;
