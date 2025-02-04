@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.util.List;
+
 public record PurchaseRequest(
 		@NotNull(message = "CPF é obrigatório")
 		@CPF(message = "O CPF deve conter 11 dígitos")

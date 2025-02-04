@@ -1,7 +1,11 @@
 package com.online.shopping.dtos;
 
+import com.online.shopping.models.PurchaseItem;
+
+import java.util.List;
+
 public record PurchaseResponse(
-		String email,
-		List<ProductPurchaseResponse> products
+		String cpf,
+		List<PurchaseItemResponse> items
 ) {
 }
