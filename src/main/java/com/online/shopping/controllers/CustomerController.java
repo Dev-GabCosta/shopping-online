@@ -6,6 +6,7 @@ import com.online.shopping.dtos.UpdateCustomerEmailDTO;
 import com.online.shopping.services.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class CustomerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<CustomerResponse> createCustomer(@RequestBody CustomerRequest request) {
+	public ResponseEntity<CustomerResponse> createCustomer(@Validated @RequestBody CustomerRequest request) {
 		CustomerResponse response = service.createCustomer(request);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
