@@ -26,22 +26,28 @@ public class CustomerController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
+	@GetMapping("/{cpf}")
+	public ResponseEntity<CustomerResponse> getCustomerByCpf(@PathVariable String cpf) {
+		CustomerResponse customerDetailes = service.getCustomerByCpf(cpf);
+		return ResponseEntity.status(HttpStatus.OK).body(customerDetailes);
+	}
+
 	@GetMapping
 	public ResponseEntity<List<CustomerResponse>> getAllCustomers() {
 		List<CustomerResponse> customers = service.getAllCustomers();
 		return ResponseEntity.status(HttpStatus.OK).body(customers);
 	}
 
-	@PatchMapping("/{id}/email")
-	public  ResponseEntity<CustomerResponse> updateCustomerEmail(@PathVariable Long id, @RequestBody UpdateCustomerEmailDTO emailDTO){
-		CustomerResponse response = service.updateEmail(id, emailDTO.email());
-		return  ResponseEntity.status(HttpStatus.OK).body(response);
+	@PatchMapping("/{cpf}")
+	public ResponseEntity<CustomerResponse> updateCustomerEmail(@PathVariable String cpf, @RequestBody UpdateCustomerEmailDTO emailDTO) {
+		CustomerResponse response = service.updateEmail(cpf, emailDTO.email());
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	@DeleteMapping("/{id}")
-	public  ResponseEntity deleteCustomer(@PathVariable Long id){
+	public ResponseEntity deleteCustomer(@PathVariable Long id) {
 		service.deleteCustomer(id);
-		return  ResponseEntity.noContent().build();
+		return ResponseEntity.noContent().build();
 	}
 
 }

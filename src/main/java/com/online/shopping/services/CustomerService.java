@@ -74,4 +74,22 @@ public class CustomerService {
 		return "Não foi possível encontrar o cliente com o CPF " + cpf;
 	}
 
+	public CustomerResponse getCustomerByCpf(String cpf) {
+		Optional<Customer> optionalCustomer = repository.findByCpf(cpf);
+
+		if (optionalCustomer.isEmpty()) {
+			throw new CustomerNotFoundException(showMessage(cpf));
+		}
+
+		Customer customer = optionalCustomer.get();
+
+		return new CustomerResponse(
+				customer.getId(),
+				customer.getName(),
+				customer.getCpf(),
+				customer.getEmail()
+		);
+	}
+
+
 }
