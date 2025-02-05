@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(ProductNotFoundException.class)
-	public ResponseEntity<Map<String>> handleProductNotFound(ProductNotFoundException exception) {
+	public ResponseEntity<Map<String, String >> handleProductNotFound(ProductNotFoundException exception) {
 		Map<String, String> error = new HashMap<>();
 		error.put("erro", exception.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
@@ -27,6 +27,20 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MissingProductException.class)
 	public ResponseEntity<Map<String, String>> handleMissingProduct(MissingProductException exception) {
+		Map<String, String> error = new HashMap<>();
+		error.put("Erro", exception.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+
+	@ExceptionHandler(UsedEmailException.class)
+	public ResponseEntity<Map<String, String>> handleUsedEmail(UsedEmailException exception){
+		Map<String, String> error = new HashMap<>();
+		error.put("Erro", exception.getMessage());
+		return  ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+	}
+
+	@ExceptionHandler(InsufficientStockException.class)
+	public  ResponseEntity<Map<String, String >> handleInsufficientStock(InsufficientStockException exception){
 		Map<String, String> error = new HashMap<>();
 		error.put("Erro", exception.getMessage());
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);

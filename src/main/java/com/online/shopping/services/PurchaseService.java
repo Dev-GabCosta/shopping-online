@@ -4,8 +4,10 @@ import com.online.shopping.dtos.ProductPurchaseRequest;
 import com.online.shopping.dtos.PurchaseItemResponse;
 import com.online.shopping.dtos.PurchaseRequest;
 import com.online.shopping.dtos.PurchaseResponse;
+import com.online.shopping.exceptions.CustomerNotFoundException;
 import com.online.shopping.exceptions.InsufficientStockException;
 import com.online.shopping.exceptions.MissingProductException;
+import com.online.shopping.exceptions.ProductNotFoundException;
 import com.online.shopping.models.Product;
 import com.online.shopping.models.Purchase;
 import com.online.shopping.models.PurchaseItem;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//Adicionar verificação da existência do cliente
+
 @Service
 public class PurchaseService {
 	private final ProductRepository productRepository;
@@ -33,20 +35,20 @@ public class PurchaseService {
 
 	public PurchaseResponse createPurchase(PurchaseRequest request) {
 		customerRepository.findByCpf(request.cpf())
-				.orElseThrow(() -> new RuntimeException("Cliente não encontrado para o CPF " + request.cpf()));
+				.orElseThrow(() -> new CustomerNotFoundException("Cliente não encontrado para o CPF " + request.cpf()));
 
 		List<PurchaseItem> purchaseItens = new ArrayList<>();
 
 		for (ProductPurchaseRequest productRequest : request.products()) {
 			Product product = productRepository.findByName(productRequest.name())
-					                  .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + productRequest.name()));
+					                  .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado: " + productRequest.name()));
 
 			if (product.getStock() == 0) {
-				throw new MissingProductException("Erro: produto em falta: " + product.getName());
+				throw new MissingProductException("Produto indisponível no momento: " + product.getName());
 			}
 
 			if (product.getStock() < productRequest.quantity()) {
-				throw new InsufficientStockException("Não há estoque suficiente para fazer essa aquisição");
+				throw new InsufficientStockException("Não é possível adquirir essa quantidade desse produto");
 			}
 
 			product.setStock(product.getStock() - productRequest.quantity());
