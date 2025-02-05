@@ -8,7 +8,7 @@ public record CustomerRequest(
 		@NotNull(message = "Nome é obrigatório")
 		String name,
 		@NotNull(message = "CPF é obrigatório")
-		@CPF(message = "O CPF deve possuir 11 dígitos")
+		@CPF(message = "Insira um CPF válido")
 		String cpf,
 		@NotNull(message = "O email é obrigatório")
 		@Email(message = "O email deve possuir o formato usuario@email.com")

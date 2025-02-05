@@ -8,7 +8,7 @@ import java.util.List;
 
 public record PurchaseRequest(
 		@NotNull(message = "CPF é obrigatório")
-		@CPF(message = "O CPF deve conter 11 dígitos")
+		@CPF(message = "Insira um CPF válido")
 		String cpf,
 		@NotEmpty(message = "A lista de produtos não pode estar vazia")
 		List<ProductPurchaseRequest> products
