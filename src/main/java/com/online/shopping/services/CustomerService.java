@@ -41,11 +41,11 @@ public class CustomerService {
 				       .collect(Collectors.toList());
 	}
 
-	public CustomerResponse updateEmail(Long id, String email) {
-		Optional<Customer> optionalCustomer = repository.findById(id);
+	public CustomerResponse updateEmail(String cpf, String email) {
+		Optional<Customer> optionalCustomer = repository.findByCpf(cpf);
 
 		if (optionalCustomer.isEmpty()) {
-			throw new CustomerNotFoundException(showMessage(id));
+			throw new CustomerNotFoundException(showMessage(cpf));
 		}
 
 		Customer customer = optionalCustomer.get();
@@ -70,5 +70,8 @@ public class CustomerService {
 		return "Não foi possível encontrar o cliente com o id " + id;
 	}
 
+	private String showMessage(String cpf) {
+		return "Não foi possível encontrar o cliente com o CPF " + cpf;
+	}
 
 }
