@@ -32,8 +32,8 @@ public class PurchaseService {
 	}
 
 	public PurchaseResponse createPurchase(PurchaseRequest request) {
-		Customer customer = customerRepository.findByCpf(request.cpf())
-				                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado para o CPF " + request.cpf()));
+		customerRepository.findByCpf(request.cpf())
+				.orElseThrow(() -> new RuntimeException("Cliente não encontrado para o CPF " + request.cpf()));
 
 		List<PurchaseItem> purchaseItens = new ArrayList<>();
 
@@ -41,8 +41,8 @@ public class PurchaseService {
 			Product product = productRepository.findByName(productRequest.name())
 					                  .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + productRequest.name()));
 
-			if (product.getStock() == 0){
-				throw new MissingProductException("Erro: produto em falta: " + product.getName()));
+			if (product.getStock() == 0) {
+				throw new MissingProductException("Erro: produto em falta: " + product.getName());
 			}
 
 			if (product.getStock() < productRequest.quantity()) {
