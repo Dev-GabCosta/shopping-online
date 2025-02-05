@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<Map<String, String>> handleMissingProduct(MissingProductException exception) {
 		Map<String, String> error = new HashMap<>();
 		error.put("Erro", exception.getMessage());
-		return ResponseEntity.status()
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
 	}
 
 }
