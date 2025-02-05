@@ -2,7 +2,8 @@ package com.online.shopping.services;
 
 import com.online.shopping.dtos.CustomerRequest;
 import com.online.shopping.dtos.CustomerResponse;
-import com.online.shopping.dtos.UpdateCustomerEmailDTO;
+import com.online.shopping.exceptions.CustomerNotFoundException;
+import com.online.shopping.exceptions.UsedEmailException;
 import com.online.shopping.models.Customer;
 import com.online.shopping.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+//Adicionar implementação das exceções
 @Service
 public class CustomerService {
 	private final CustomerRepository repository;
@@ -43,13 +45,13 @@ public class CustomerService {
 		Optional<Customer> optionalCustomer = repository.findById(id);
 
 		if (optionalCustomer.isEmpty()) {
-			throw new RuntimeException("Cliente não encontrado");
+			throw new CustomerNotFoundException(showMessage(id));
 		}
 
 		Customer customer = optionalCustomer.get();
 
 		if (repository.existsByEmail(email)) {
-			throw new RuntimeException("O e-mail já está sendo usado");
+			throw new UsedEmailException("O e-mail já está sendo usado");
 		}
 
 		customer.setEmail(email);
@@ -57,11 +59,15 @@ public class CustomerService {
 		return new CustomerResponse(customer.getId(), customer.getName(), customer.getCpf(), customer.getEmail());
 	}
 
-	public  void deleteCustomer(Long id){
+	public void deleteCustomer(Long id) {
 		repository.findById(id)
-				.orElseThrow(()-> new RuntimeException("Cliente não encontrado"));
+				.orElseThrow(() -> new CustomerNotFoundException(showMessage(id)));
 
 		repository.deleteById(id);
+	}
+
+	private static String showMessage(Long id) {
+		return "Não foi possível encontrar o cliente com o id " + id;
 	}
 
 

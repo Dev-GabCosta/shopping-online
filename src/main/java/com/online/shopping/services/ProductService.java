@@ -3,6 +3,7 @@ package com.online.shopping.services;
 import com.online.shopping.dtos.ProductRequest;
 import com.online.shopping.dtos.ProductResponse;
 import com.online.shopping.dtos.UpdateProductDTO;
+import com.online.shopping.exceptions.ProductNotFoundException;
 import com.online.shopping.mappers.ProductMapperRequest;
 import com.online.shopping.mappers.ProductMapperResponse;
 import com.online.shopping.models.Product;
@@ -49,7 +50,7 @@ public class ProductService {
 		Optional<Product> optionalProduct = repository.findById(id);
 
 		if (optionalProduct.isEmpty()) {
-			throw new RuntimeException("Produto não encontrado");
+			throw new ProductNotFoundException("Produto não encontrado");
 		}
 
 		Product product = optionalProduct.get();
@@ -58,7 +59,7 @@ public class ProductService {
 
 	public void deleteProduct(Long id) {
 		repository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+				.orElseThrow(() -> new ProductNotFoundException(showMessage(id)));
 		repository.deleteById(id);
 	}
 
@@ -66,7 +67,7 @@ public class ProductService {
 		Optional<Product> optionalProduct = repository.findById(id);
 
 		if (optionalProduct.isEmpty()) {
-			throw new RuntimeException("Produto não encontrado");
+			throw new ProductNotFoundException(showMessage(id));
 		}
 
 		Product product = optionalProduct.get();
@@ -75,4 +76,9 @@ public class ProductService {
 		repository.save(product);
 		return mapperResponse.map(product);
 	}
+
+	private static String showMessage(Long id) {
+		return  "Não foi possível encontrar o produto com id " + id;
+	}
+
 }
